@@ -27,7 +27,7 @@ const Control: React.FC<IProps> = () => {
           Add
         </Button>
         {/* 旋转pdf */}
-        <ButtonGroup items={items} onClick={handleClick} disabled />
+        <ButtonGroup items={items} onClick={handleClick} variant="line" disabled />
       </div>
 
       {/* 导出按钮 */}
