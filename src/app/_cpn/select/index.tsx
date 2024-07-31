@@ -1,5 +1,3 @@
-'use client'
-
 import ButtonGroup, { ButtonGroupPropsItems } from '@/components/button-group'
 import Tag, { TagProps } from '@/components/tag'
 import { ChevronDown, PlusCircle, UploadCloud } from 'lucide-react'
