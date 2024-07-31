@@ -20,7 +20,7 @@ const AppNav: React.FC<IProps> = () => {
   const pathname = usePathname()
 
   return (
-    <nav className="h-full py-2 flex-center-i flex-col gap-1 bg-primary text-white">
+    <nav className="h-full py-2 flex-center-i flex-col gap-1 bg-primary-deep text-white">
       <div className="pb-2 border-b border-zinc-700">
         <Link href="/" className="w-10 h-10 flex mx-4 ">
           <Logo />
