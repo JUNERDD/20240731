@@ -3,7 +3,9 @@ import Tag, { TagProps } from '@/components/tag'
 import { ChevronDown, PlusCircle, UploadCloud } from 'lucide-react'
 import { memo } from 'react'
 
-interface IProps {}
+interface IProps {
+  onSelect?: () => void
+}
 
 /**
  * 按钮组
@@ -25,9 +27,9 @@ const tags: TagProps[] = [
   { label: 'JPG', color: '#994d00', backgroundColor: '#ffe6cc' }
 ]
 
-const Select: React.FC<IProps> = () => {
+const Select: React.FC<IProps> = ({ onSelect }) => {
   const handleClick = () => {
-    console.log(123)
+    onSelect && onSelect()
   }
 
   return (
