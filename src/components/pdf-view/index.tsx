@@ -8,7 +8,7 @@ import Last from './_cpn/last'
 import Item from './_cpn/item'
 import Full from './_cpn/full'
 
-export interface TagProps {
+export interface PdfViewProps {
   file: PDFFile
   name: string
   rotateList: number[]
@@ -26,7 +26,7 @@ const options = {
   standardFontDataUrl: '/standard_fonts/'
 }
 
-const PDFView: React.FC<TagProps> = ({
+const PDFView: React.FC<PdfViewProps> = ({
   file,
   name,
   rotateList,
