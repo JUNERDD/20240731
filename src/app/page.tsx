@@ -32,6 +32,9 @@ export default function Home() {
   //判断是否是增加
   const [isAdd, setIsAdd] = useState(true)
 
+  //旋转数组
+  const [rotateList, setRotateList] = useState<number[]>([])
+
   //更改pdf
   async function addPdf(nextFile: File, index: number) {
     //增加
@@ -100,7 +103,7 @@ export default function Home() {
       <AppHeader label="Rotate" />
 
       {/* control */}
-      <Control onSelect={handleSelectAdd} />
+      <Control disabled={!file} setRotateList={setRotateList} onSelect={handleSelectAdd} />
 
       {/* main */}
       <div
@@ -111,7 +114,13 @@ export default function Home() {
       >
         {/* 选择文件 */}
         {file ? (
-          <PdfView file={file} name={fileName} onSelect={handleSelectAdd} />
+          <PdfView
+            file={file}
+            name={fileName}
+            onSelect={handleSelectAdd}
+            rotateList={rotateList}
+            setRotateList={setRotateList}
+          />
         ) : (
           <Select onSelect={handleSelectReplace} />
         )}

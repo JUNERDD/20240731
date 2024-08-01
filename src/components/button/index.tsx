@@ -33,6 +33,7 @@ const Button: React.FC<IProps> = ({
   Icon,
   iconSize = 17,
   variant = 'primary',
+  disabled = false,
   className,
   ...props
 }) => {
@@ -42,7 +43,11 @@ const Button: React.FC<IProps> = ({
     <button
       type="button"
       title="user"
-      className={cn(buttonVariants({ variant, icon }), className)}
+      className={cn(
+        buttonVariants({ variant, icon }),
+        disabled && 'bg-[#F4F4F4] cursor-not-allowed hover:bg-[#F4F4F4] text-zinc-400',
+        className
+      )}
       {...props}
     >
       {Icon && <Icon strokeWidth={1} size={icon ? 20 : iconSize} />}

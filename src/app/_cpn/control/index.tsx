@@ -3,9 +3,11 @@
 import Button from '@/components/button'
 import ButtonGroup, { ButtonGroupPropsItems } from '@/components/button-group'
 import { CirclePlus, MoveRight, RotateCcw, RotateCw } from 'lucide-react'
-import { memo, useCallback } from 'react'
+import { Dispatch, memo, SetStateAction, useCallback } from 'react'
 
 interface IProps {
+  disabled: boolean
+  setRotateList: Dispatch<SetStateAction<number[]>>
   onSelect?: (index?: number) => void
 }
 
@@ -17,9 +19,16 @@ const items: ButtonGroupPropsItems[] = [
   { Icon: RotateCw, label: 'Right', key: 'right', title: 'Rotate Right' }
 ]
 
-const Control: React.FC<IProps> = ({ onSelect }) => {
+const Control: React.FC<IProps> = ({ disabled, setRotateList, onSelect }) => {
   const handleClick = useCallback((key: string) => {
-    console.log(key)
+    switch (key) {
+      case 'left':
+        setRotateList((prev) => prev.map((item) => item + 90))
+        break
+      case 'right':
+        setRotateList((prev) => prev.map((item) => item - 90))
+        break
+    }
   }, [])
 
   //增加文件
@@ -34,11 +43,11 @@ const Control: React.FC<IProps> = ({ onSelect }) => {
           Add
         </Button>
         {/* 旋转pdf */}
-        <ButtonGroup items={items} onClick={handleClick} variant="line" disabled />
+        <ButtonGroup items={items} onClick={handleClick} variant="line" disabled={disabled} />
       </div>
 
       {/* 导出按钮 */}
-      <Button className="w-56">
+      <Button className="w-56" disabled={disabled}>
         <span>Finish</span>
         <MoveRight strokeWidth={1} />
       </Button>

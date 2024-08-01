@@ -1,5 +1,5 @@
 import { PDFFile } from '@/types'
-import { Fragment, memo, useCallback, useRef, useState } from 'react'
+import { Dispatch, Fragment, memo, SetStateAction, useCallback, useRef, useState } from 'react'
 import { Document } from 'react-pdf'
 
 import type { PDFDocumentProxy } from 'pdfjs-dist'
@@ -11,6 +11,8 @@ import Full from './_cpn/full'
 export interface TagProps {
   file: PDFFile
   name: string
+  rotateList: number[]
+  setRotateList: Dispatch<SetStateAction<number[]>>
   onSelect?: (index?: number) => void
 }
 
@@ -22,7 +24,7 @@ const options = {
   standardFontDataUrl: '/standard_fonts/'
 }
 
-const PDFView: React.FC<TagProps> = ({ file, name, onSelect }) => {
+const PDFView: React.FC<TagProps> = ({ file, name, rotateList, setRotateList, onSelect }) => {
   //页码
   const [numPages, setNumPages] = useState(0)
 
@@ -32,15 +34,12 @@ const PDFView: React.FC<TagProps> = ({ file, name, onSelect }) => {
   //当前页码
   const [num, setNum] = useState(1)
 
-  //旋转数组
-  const [rotateList, setRotateList] = useState<number[]>([])
-
   /**
    * pdf加载成功
    */
   function onDocumentLoadSuccess({ numPages: nextNumPages }: PDFDocumentProxy): void {
     setNumPages(nextNumPages)
-    setRotateList(Array.from(new Array(nextNumPages), () => 0))
+    setRotateList(new Array(nextNumPages).fill(0))
   }
 
   /**

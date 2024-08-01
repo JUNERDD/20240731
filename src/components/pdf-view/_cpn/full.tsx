@@ -124,8 +124,10 @@ const ThumbnailFull: React.FC<IProps> = ({
   )
 
   //更新父组件的值
+  const openRef = useRef(open)
+  openRef.current = open
   useEffect(() => {
-    onRotate && onRotate(numRef.current - 1, rotate)
+    openRef.current && onRotate && onRotate(numRef.current - 1, rotate)
   }, [rotate])
 
   return createPortal(
