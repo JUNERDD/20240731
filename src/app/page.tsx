@@ -11,6 +11,7 @@ import { useCallback, useRef, useState } from 'react'
 import { ElChange, PDFFile } from '@/types'
 import PdfView from '@/components/pdf-view'
 import { cn } from '@/lib/utils'
+import { PDFDocument } from 'pdf-lib'
 
 // 配置
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -20,10 +21,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 export default function Home() {
   //文件对象
-  const [file, setFile] = useState<PDFFile>('sample.pdf')
+  const [file, setFile] = useState<PDFFile>()
 
   //文件名
-  const [fileName, setFileName] = useState<string>('sample_test_pdf.pdf')
+  const [fileName, setFileName] = useState<string>()
 
   //文件选择器ref
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -31,15 +32,48 @@ export default function Home() {
   //判断是否是增加
   const [isAdd, setIsAdd] = useState(true)
 
+  //更改pdf
+  async function addPdf(nextFile: File, index: number) {
+    //增加
+    const existingPdfBytes =
+      file instanceof Blob
+        ? await file.arrayBuffer()
+        : await fetch(file as string).then((res) => res.arrayBuffer())
+    const newPdfBytes = await nextFile.arrayBuffer()
+
+    const existingPdfDoc = await PDFDocument.load(existingPdfBytes)
+    const newPdfDoc = await PDFDocument.load(newPdfBytes)
+
+    const copiedPages = await existingPdfDoc.copyPages(newPdfDoc, newPdfDoc.getPageIndices())
+
+    //判断是否是追加
+    copiedPages.forEach((page) => {
+      if (index === -1) {
+        existingPdfDoc.addPage(page)
+      } else {
+        //先反转结果预防倒叙
+        copiedPages.reverse()
+        existingPdfDoc.insertPage(index, page)
+      }
+    })
+
+    const mergedPdfBytes = await existingPdfDoc.save()
+    const mergedPdfBlob = new Blob([mergedPdfBytes], { type: 'application/pdf' })
+    const mergedPdfUrl = URL.createObjectURL(mergedPdfBlob)
+
+    setFile(mergedPdfUrl)
+  }
+
   //文件更改事件
-  const handleFileChange: ElChange<HTMLInputElement> = ({ target }) => {
+  const indexRef = useRef(0)
+  const handleFileChange: ElChange<HTMLInputElement> = async ({ target }) => {
     const { files } = target
 
     const nextFile = files?.[0]
 
     if (nextFile) {
       if (isAdd) {
-        //增加
+        await addPdf(nextFile, indexRef.current)
       } else {
         setFile(nextFile)
         setFileName(nextFile.name)
@@ -50,6 +84,7 @@ export default function Home() {
   //打开文件选择对话框
   const handleSelectAdd = useCallback(
     (index: number) => {
+      indexRef.current = index
       setIsAdd(true)
       inputRef.current?.click()
     },

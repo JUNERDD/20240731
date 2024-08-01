@@ -67,7 +67,7 @@ const PDFView: React.FC<TagProps> = ({ file, name, onSelect }) => {
   )
 
   //增加文件
-  const handleAdd = useCallback((index = numPages) => {
+  const handleAdd = useCallback((index = -1) => {
     onSelect && onSelect(index)
   }, [])
 
@@ -76,7 +76,7 @@ const PDFView: React.FC<TagProps> = ({ file, name, onSelect }) => {
       file={file}
       onLoadSuccess={onDocumentLoadSuccess}
       options={options}
-      className="pdf-view-list flex gap-2 text-xs"
+      className="flex gap-2 text-xs flex-wrap"
       onItemClick={() => {}}
     >
       {Array.from(new Array(numPages), (_, index) => (
