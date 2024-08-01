@@ -28,6 +28,9 @@ export default function Home() {
   //文件选择器ref
   const inputRef = useRef<HTMLInputElement | null>(null)
 
+  //判断是否是增加
+  const [isAdd, setIsAdd] = useState(true)
+
   //文件更改事件
   const handleFileChange: ElChange<HTMLInputElement> = ({ target }) => {
     const { files } = target
@@ -35,14 +38,28 @@ export default function Home() {
     const nextFile = files?.[0]
 
     if (nextFile) {
-      setFile(nextFile)
+      if (isAdd) {
+        //增加
+      } else {
+        setFile(nextFile)
+        setFileName(nextFile.name)
+      }
     }
   }
 
   //打开文件选择对话框
-  const handleSelect = useCallback(() => {
+  const handleSelectAdd = useCallback(
+    (index: number) => {
+      setIsAdd(true)
+      inputRef.current?.click()
+    },
+    [setIsAdd]
+  )
+
+  const handleSelectReplace = useCallback(() => {
+    setIsAdd(false)
     inputRef.current?.click()
-  }, [])
+  }, [setIsAdd])
 
   return (
     <main className="w-full flex flex-col">
@@ -60,7 +77,11 @@ export default function Home() {
         )}
       >
         {/* 选择文件 */}
-        {file ? <PdfView file={file} name={fileName} /> : <Select onSelect={handleSelect} />}
+        {file ? (
+          <PdfView file={file} name={fileName} onSelect={handleSelectAdd} />
+        ) : (
+          <Select onSelect={handleSelectReplace} />
+        )}
 
         {/* pdf logo */}
         {!file && (

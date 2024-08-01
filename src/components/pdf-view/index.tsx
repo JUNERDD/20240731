@@ -5,12 +5,13 @@ import { Document } from 'react-pdf'
 import type { PDFDocumentProxy } from 'pdfjs-dist'
 import { PlusCircle } from 'lucide-react'
 import Last from './_cpn/last'
-import Item, { ListThumbnailRef } from './_cpn/item'
+import Item from './_cpn/item'
 import Full from './_cpn/full'
 
 export interface TagProps {
   file: PDFFile
   name: string
+  onSelect?: (index: number) => void
 }
 
 /**
@@ -21,7 +22,7 @@ const options = {
   standardFontDataUrl: '/standard_fonts/'
 }
 
-const PDFView: React.FC<TagProps> = ({ file, name }) => {
+const PDFView: React.FC<TagProps> = ({ file, name, onSelect }) => {
   //页码
   const [numPages, setNumPages] = useState(0)
 
@@ -65,6 +66,11 @@ const PDFView: React.FC<TagProps> = ({ file, name }) => {
     [setRotateList]
   )
 
+  //增加文件
+  const handleAdd = useCallback((index = numPages) => {
+    onSelect && onSelect(index)
+  }, [])
+
   return (
     <Document
       file={file}
@@ -84,14 +90,18 @@ const PDFView: React.FC<TagProps> = ({ file, name }) => {
           />
 
           {/* 添加按钮 */}
-          <div className="flex-center group/item hover:cursor-pointer" title="Adds Documents">
+          <div
+            className="flex-center group/item hover:cursor-pointer"
+            title="Adds Documents"
+            onClick={() => handleAdd(index)}
+          >
             <PlusCircle className="fill-[#D9E5FF] stroke-white group-hover/item:fill-[#0055FF]" />
           </div>
         </Fragment>
       ))}
 
       {/* 最后添加按钮 */}
-      <Last />
+      <Last onSelect={handleAdd} />
 
       {/* 浏览窗口 */}
       <Full
