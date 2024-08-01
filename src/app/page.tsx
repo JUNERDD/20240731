@@ -7,7 +7,7 @@ import Select from './_cpn/select'
 import { pdfjs } from 'react-pdf'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 import 'react-pdf/dist/esm/Page/TextLayer.css'
-import { PDFDocument } from 'pdf-lib'
+import { degrees, PDFDocument } from 'pdf-lib'
 import { saveAs } from 'file-saver'
 import { useCallback, useRef, useState } from 'react'
 import { ElChange, PDFFile } from '@/types'
@@ -139,11 +139,18 @@ export default function Home() {
   const handleExport = useCallback(async () => {
     if (file) {
       const existingPdfDoc = await loadPdf()
+      const pages = existingPdfDoc.getPages()
+
+      //根据当前旋转角度进行旋转
+      pages.forEach((page, index) => {
+        page.setRotation(degrees(page.getRotation().angle + rotateList[index]))
+      })
+
       const newPdfBytes = await existingPdfDoc.save()
       const newPdfBlob = new Blob([newPdfBytes], { type: 'application/pdf' })
       saveAs(newPdfBlob, fileName || 'document.pdf')
     }
-  }, [file, fileName])
+  }, [file, rotateList, fileName])
 
   return (
     <main className="w-full flex flex-col">
