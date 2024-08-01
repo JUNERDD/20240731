@@ -45,14 +45,6 @@ const PDFView: React.FC<PdfViewProps> = ({
   const [num, setNum] = useState(1)
 
   /**
-   * pdf加载成功
-   */
-  function onDocumentLoadSuccess({ numPages: nextNumPages }: PDFDocumentProxy): void {
-    setNumPages(nextNumPages)
-    setRotateList(new Array(nextNumPages).fill(0))
-  }
-
-  /**
    * 打开全屏浏览
    */
   const handlePreview = useCallback(
@@ -63,9 +55,25 @@ const PDFView: React.FC<PdfViewProps> = ({
     [setIsShowFull, setNum]
   )
 
-  //监听旋转事件
+  //保留旋转数组
   const rotateListRef = useRef(rotateList)
   rotateListRef.current = rotateList
+
+  /**
+   * pdf加载成功
+   */
+  function onDocumentLoadSuccess({ numPages: nextNumPages }: PDFDocumentProxy): void {
+    setNumPages(nextNumPages)
+    setRotateList((prevRotateList) => {
+      const newRotateList = new Array(nextNumPages).fill(0)
+      for (let i = 0; i < prevRotateList.length && i < nextNumPages; i++) {
+        newRotateList[i] = prevRotateList[i]
+      }
+      return newRotateList
+    })
+  }
+
+  //监听旋转事件
   const handleRotate = useCallback(
     (index: number, angle: number) => {
       const list = [...rotateListRef.current]
