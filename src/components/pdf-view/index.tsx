@@ -14,6 +14,7 @@ export interface TagProps {
   rotateList: number[]
   setRotateList: Dispatch<SetStateAction<number[]>>
   onSelect?: (index?: number) => void
+  onCopy?: (index: number) => void
   onDelete?: (index: number) => void
 }
 
@@ -31,6 +32,7 @@ const PDFView: React.FC<TagProps> = ({
   rotateList,
   setRotateList,
   onSelect,
+  onCopy,
   onDelete
 }) => {
   //页码
@@ -97,6 +99,7 @@ const PDFView: React.FC<TagProps> = ({
             rotate={rotateList[index]}
             onPreview={handlePreview}
             onRotate={handleRotate}
+            onCopy={onCopy}
             onDelete={onDelete}
           />
 

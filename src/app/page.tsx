@@ -52,18 +52,30 @@ export default function Home() {
     }
   }
 
-  //添加pdf
-  async function addPdf(nextFile: File, index: number) {
-    //增加
+  //加载pdf
+  async function loadPdf() {
     const existingPdfBytes =
       file instanceof Blob
         ? await file.arrayBuffer()
         : await fetch(file as string).then((res) => res.arrayBuffer())
+
+    return await PDFDocument.load(existingPdfBytes)
+  }
+
+  //更新pdf
+  async function updatePdf(doc: PDFDocument) {
+    const newPdfBytes = await doc.save()
+    const newPdfBlob = new Blob([newPdfBytes], { type: 'application/pdf' })
+    const newPdfUrl = URL.createObjectURL(newPdfBlob)
+
+    setFile(newPdfUrl)
+  }
+
+  //添加pdf
+  async function addPdf(nextFile: File, index: number) {
+    const existingPdfDoc = await loadPdf()
     const newPdfBytes = await nextFile.arrayBuffer()
-
-    const existingPdfDoc = await PDFDocument.load(existingPdfBytes)
     const newPdfDoc = await PDFDocument.load(newPdfBytes)
-
     const copiedPages = await existingPdfDoc.copyPages(newPdfDoc, newPdfDoc.getPageIndices())
 
     //判断是否是追加
@@ -75,32 +87,29 @@ export default function Home() {
       }
     })
 
-    const mergedPdfBytes = await existingPdfDoc.save()
-    const mergedPdfBlob = new Blob([mergedPdfBytes], { type: 'application/pdf' })
-    const mergedPdfUrl = URL.createObjectURL(mergedPdfBlob)
-
-    setFile(mergedPdfUrl)
+    await updatePdf(existingPdfDoc)
   }
+
+  //复制pdf
+  const handleCopy = useCallback(
+    async (index: number) => {
+      if (file) {
+        const existingPdfDoc = await loadPdf()
+        const [copiedPage] = await existingPdfDoc.copyPages(existingPdfDoc, [index])
+        existingPdfDoc.insertPage(index + 1, copiedPage)
+        await updatePdf(existingPdfDoc)
+      }
+    },
+    [file]
+  )
 
   //删除pdf
   const handleDelete = useCallback(
     async (index: number) => {
       if (file) {
-        const existingPdfBytes =
-          file instanceof Blob
-            ? await file.arrayBuffer()
-            : await fetch(file as string).then((res) => res.arrayBuffer())
-
-        const existingPdfDoc = await PDFDocument.load(existingPdfBytes)
-
-        // 删除指定索引的页面
+        const existingPdfDoc = await loadPdf()
         existingPdfDoc.removePage(index)
-
-        const updatedPdfBytes = await existingPdfDoc.save()
-        const updatedPdfBlob = new Blob([updatedPdfBytes], { type: 'application/pdf' })
-        const updatedPdfUrl = URL.createObjectURL(updatedPdfBlob)
-
-        setFile(updatedPdfUrl)
+        await updatePdf(existingPdfDoc)
       }
     },
     [file]
@@ -143,6 +152,7 @@ export default function Home() {
             file={file}
             name={fileName}
             onSelect={handleSelectAdd}
+            onCopy={handleCopy}
             onDelete={handleDelete}
             rotateList={rotateList}
             setRotateList={setRotateList}

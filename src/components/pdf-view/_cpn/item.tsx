@@ -9,6 +9,7 @@ interface IProps {
   rotate?: number
   onRotate?: (index: number, angle: number) => void
   onPreview?: (index: number) => void
+  onCopy?: (index: number) => void
   onDelete?: (index: number) => void
 }
 
@@ -32,6 +33,7 @@ const PDFViewItem: React.FC<IProps> = ({
   rotate = 0,
   onRotate,
   onPreview,
+  onCopy,
   onDelete
 }) => {
   //ref
@@ -61,6 +63,7 @@ const PDFViewItem: React.FC<IProps> = ({
           rotateFn()
           break
         case 'copy':
+          onCopy && onCopy(indexRef.current)
           break
         case 'delete':
           onDelete && onDelete(indexRef.current)
