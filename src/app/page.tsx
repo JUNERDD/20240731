@@ -21,10 +21,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
 
 export default function Home() {
   //文件对象
-  const [file, setFile] = useState<PDFFile>()
+  const [file, setFile] = useState<PDFFile>(null)
 
   //文件名
-  const [fileName, setFileName] = useState<string>()
+  const [fileName, setFileName] = useState<string>('')
 
   //文件选择器ref
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -47,13 +47,11 @@ export default function Home() {
     const copiedPages = await existingPdfDoc.copyPages(newPdfDoc, newPdfDoc.getPageIndices())
 
     //判断是否是追加
-    copiedPages.forEach((page) => {
+    copiedPages.forEach((page, idx) => {
       if (index === -1) {
         existingPdfDoc.addPage(page)
       } else {
-        //先反转结果预防倒叙
-        copiedPages.reverse()
-        existingPdfDoc.insertPage(index, page)
+        existingPdfDoc.insertPage(index + idx + 1, page)
       }
     })
 
@@ -83,7 +81,7 @@ export default function Home() {
 
   //打开文件选择对话框
   const handleSelectAdd = useCallback(
-    (index: number) => {
+    (index = -1) => {
       indexRef.current = index
       setIsAdd(true)
       inputRef.current?.click()
@@ -102,7 +100,7 @@ export default function Home() {
       <AppHeader label="Rotate" />
 
       {/* control */}
-      <Control />
+      <Control onSelect={handleSelectAdd} />
 
       {/* main */}
       <div

@@ -11,7 +11,7 @@ import Full from './_cpn/full'
 export interface TagProps {
   file: PDFFile
   name: string
-  onSelect?: (index: number) => void
+  onSelect?: (index?: number) => void
 }
 
 /**
@@ -67,9 +67,12 @@ const PDFView: React.FC<TagProps> = ({ file, name, onSelect }) => {
   )
 
   //增加文件
-  const handleAdd = useCallback((index = -1) => {
-    onSelect && onSelect(index)
-  }, [])
+  const handleAdd = useCallback(
+    (index?: number) => {
+      onSelect && onSelect(index)
+    },
+    [onSelect]
+  )
 
   return (
     <Document
