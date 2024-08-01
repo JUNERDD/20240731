@@ -70,7 +70,7 @@ const PDFViewItem: React.FC<IProps> = ({
           break
       }
     },
-    [onPreview, rotateFn]
+    [onPreview, rotateFn, onCopy, onDelete]
   )
 
   return (

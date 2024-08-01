@@ -46,16 +46,19 @@ const ThumbnailFull: React.FC<IProps> = ({
   /**
    * 更改数字
    */
-  const handleInputNum = (e: ElEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleInputNum = useCallback(
+    (e: ElEvent<HTMLFormElement>) => {
+      e.preventDefault()
 
-    if (boxNum <= numPages) {
-      setNum && setNum(boxNum)
-    } else {
-      setBoxNum(numPages)
-      setNum && setNum(numPages)
-    }
-  }
+      if (boxNum <= numPages) {
+        setNum && setNum(boxNum)
+      } else {
+        setBoxNum(numPages)
+        setNum && setNum(numPages)
+      }
+    },
+    [boxNum, numPages, setNum]
+  )
 
   const numRef = useRef(num)
   numRef.current = num
@@ -123,7 +126,7 @@ const ThumbnailFull: React.FC<IProps> = ({
           break
       }
     },
-    [numPages, setNum, setRotate]
+    [numPages, setNum, setRotate, onDelete]
   )
 
   //更新父组件的值
@@ -131,7 +134,7 @@ const ThumbnailFull: React.FC<IProps> = ({
   openRef.current = open
   useEffect(() => {
     openRef.current && onRotate && onRotate(numRef.current - 1, rotate)
-  }, [rotate])
+  }, [rotate, onRotate])
 
   return createPortal(
     <div className={cn('fixed top-0 bottom-0 left-0 right-0', open ? 'flex-center' : 'hidden')}>

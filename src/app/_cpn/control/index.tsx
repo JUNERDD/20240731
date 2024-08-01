@@ -21,16 +21,19 @@ const items: ButtonGroupPropsItems[] = [
 ]
 
 const Control: React.FC<IProps> = ({ disabled, setRotateList, onSelect, onFinish }) => {
-  const handleClick = useCallback((key: string) => {
-    switch (key) {
-      case 'left':
-        setRotateList((prev) => prev.map((item) => item + 90))
-        break
-      case 'right':
-        setRotateList((prev) => prev.map((item) => item - 90))
-        break
-    }
-  }, [])
+  const handleClick = useCallback(
+    (key: string) => {
+      switch (key) {
+        case 'left':
+          setRotateList((prev) => prev.map((item) => item + 90))
+          break
+        case 'right':
+          setRotateList((prev) => prev.map((item) => item - 90))
+          break
+      }
+    },
+    [setRotateList]
+  )
 
   //增加文件
   const handleAdd = useCallback(() => {

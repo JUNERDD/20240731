@@ -15,10 +15,7 @@ import PdfView from '@/components/pdf-view'
 import { cn } from '@/lib/utils'
 
 // 配置
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.mjs',
-  import.meta.url
-).toString()
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`
 
 export default function Home() {
   //文件对象
@@ -120,7 +117,7 @@ export default function Home() {
         await updatePdf(existingPdfDoc)
       }
     },
-    [file]
+    [file, loadPdf]
   )
 
   //删除pdf
