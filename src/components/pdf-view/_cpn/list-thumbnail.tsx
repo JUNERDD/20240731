@@ -1,17 +1,17 @@
 import { RotateCw } from 'lucide-react'
-import { Dispatch, forwardRef, memo, SetStateAction } from 'react'
+import { memo } from 'react'
 import { Thumbnail, ThumbnailProps } from 'react-pdf'
 
 export interface ListThumbnailProps extends ThumbnailProps {
-  setRotate?: Dispatch<SetStateAction<number>>
+  onRotate?: () => void
 }
 
-const ListThumbnail: React.FC<ListThumbnailProps> = ({ pageNumber, rotate, setRotate }) => {
+const ListThumbnail: React.FC<ListThumbnailProps> = ({ pageNumber, rotate, onRotate }) => {
   /**
    * 旋转pdf
    */
   function rotatePDF() {
-    setRotate && setRotate((prevRotation) => (prevRotation + 90) % 360)
+    onRotate && onRotate()
   }
 
   return (

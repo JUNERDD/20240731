@@ -1,11 +1,13 @@
 import { Copy, RotateCw, ZoomIn, Trash } from 'lucide-react'
-import { memo, useCallback, useRef, useState } from 'react'
+import { Dispatch, memo, SetStateAction, useCallback, useRef, useState } from 'react'
 import ListThumbnail from './list-thumbnail'
 import ButtonGroup, { ButtonGroupPropsItems } from '@/components/button-group'
 
 interface IProps {
   index: number
   name: string
+  rotate?: number
+  onRotate?: (index: number, angle: number) => void
   onPreview?: (index: number) => void
 }
 
@@ -23,8 +25,19 @@ const buttonGroupItems: ButtonGroupPropsItems[] = [
   { key: 'delete', Icon: Trash, title: 'Delete' }
 ]
 
-const PDFViewItem: React.FC<IProps> = ({ index, name, onPreview }) => {
-  const [rotate, setRotate] = useState(0)
+const PDFViewItem: React.FC<IProps> = ({ index, name, rotate = 0, onRotate, onPreview }) => {
+  //ref
+  const rotateRef = useRef(rotate)
+  const indexRef = useRef(index)
+  rotateRef.current = rotate
+  indexRef.current = index
+
+  /**
+   * 旋转事件
+   */
+  const rotateFn = useCallback(() => {
+    onRotate && onRotate(indexRef.current, (rotateRef.current + 90) % 360)
+  }, [onRotate])
 
   /**
    * 点击按钮组
@@ -37,7 +50,7 @@ const PDFViewItem: React.FC<IProps> = ({ index, name, onPreview }) => {
           onPreview && onPreview(index)
           break
         case 'rotate':
-          setRotate((prevRotation) => (prevRotation + 90) % 360)
+          rotateFn()
           break
         case 'copy':
           break
@@ -45,13 +58,13 @@ const PDFViewItem: React.FC<IProps> = ({ index, name, onPreview }) => {
           break
       }
     },
-    [onPreview, setRotate]
+    [onPreview, rotateFn]
   )
 
   return (
     <div className="flex-center flex-col gap-2 group/item hover:bg-[#D9E5FF] w-40 h-60 select-none relative">
       {/* pdf浏览 */}
-      <ListThumbnail pageNumber={index + 1} rotate={rotate} setRotate={setRotate} />
+      <ListThumbnail pageNumber={index + 1} rotate={rotate} onRotate={rotateFn} />
 
       {/* 名称 */}
       <span

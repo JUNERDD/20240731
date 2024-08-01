@@ -1,13 +1,12 @@
 import { PDFFile } from '@/types'
-import { Fragment, memo, useCallback, useState } from 'react'
+import { Fragment, memo, useCallback, useRef, useState } from 'react'
 import { Document } from 'react-pdf'
 
 import type { PDFDocumentProxy } from 'pdfjs-dist'
 import { PlusCircle } from 'lucide-react'
 import Last from './_cpn/last'
-import Item from './_cpn/item'
+import Item, { ListThumbnailRef } from './_cpn/item'
 import Full from './_cpn/full'
-import { createPortal } from 'react-dom'
 
 export interface TagProps {
   file: PDFFile
@@ -32,11 +31,15 @@ const PDFView: React.FC<TagProps> = ({ file, name }) => {
   //当前页码
   const [num, setNum] = useState(1)
 
+  //旋转数组
+  const [rotateList, setRotateList] = useState<number[]>([])
+
   /**
    * pdf加载成功
    */
   function onDocumentLoadSuccess({ numPages: nextNumPages }: PDFDocumentProxy): void {
     setNumPages(nextNumPages)
+    setRotateList(Array.from(new Array(nextNumPages), () => 0))
   }
 
   /**
@@ -50,6 +53,18 @@ const PDFView: React.FC<TagProps> = ({ file, name }) => {
     [setIsShowFull, setNum]
   )
 
+  //监听旋转事件
+  const rotateListRef = useRef(rotateList)
+  rotateListRef.current = rotateList
+  const handleRotate = useCallback(
+    (index: number, angle: number) => {
+      const list = [...rotateListRef.current]
+      list[index] = angle
+      setRotateList(list)
+    },
+    [setRotateList]
+  )
+
   return (
     <Document
       file={file}
@@ -60,7 +75,13 @@ const PDFView: React.FC<TagProps> = ({ file, name }) => {
     >
       {Array.from(new Array(numPages), (_, index) => (
         <Fragment key={`page_${index + 1}`}>
-          <Item index={index} name={name} onPreview={handlePreview} />
+          <Item
+            index={index}
+            name={name}
+            rotate={rotateList[index]}
+            onPreview={handlePreview}
+            onRotate={handleRotate}
+          />
 
           {/* 添加按钮 */}
           <div className="flex-center group/item hover:cursor-pointer" title="Adds Documents">
@@ -78,7 +99,9 @@ const PDFView: React.FC<TagProps> = ({ file, name }) => {
         setOpen={setIsShowFull}
         num={num}
         numPages={numPages}
+        rotateList={rotateList}
         setNum={setNum}
+        onRotate={handleRotate}
       />
     </Document>
   )
