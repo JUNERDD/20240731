@@ -7,11 +7,11 @@ import Select from './_cpn/select'
 import { pdfjs } from 'react-pdf'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 import 'react-pdf/dist/esm/Page/TextLayer.css'
+import { PDFDocument } from 'pdf-lib'
 import { useCallback, useRef, useState } from 'react'
 import { ElChange, PDFFile } from '@/types'
 import PdfView from '@/components/pdf-view'
 import { cn } from '@/lib/utils'
-import { PDFDocument } from 'pdf-lib'
 
 // 配置
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -34,6 +34,22 @@ export default function Home() {
 
   //旋转数组
   const [rotateList, setRotateList] = useState<number[]>([])
+
+  //打开文件选择对话框
+  const handleSelectAdd = useCallback(
+    (index = -1) => {
+      indexRef.current = index
+      setIsAdd(true)
+      inputRef.current?.click()
+    },
+    [setIsAdd]
+  )
+
+  //替换全部文件
+  const handleSelectReplace = useCallback(() => {
+    setIsAdd(false)
+    inputRef.current?.click()
+  }, [setIsAdd])
 
   //input文件更改事件
   const indexRef = useRef(0)
@@ -118,21 +134,11 @@ export default function Home() {
     [file]
   )
 
-  //打开文件选择对话框
-  const handleSelectAdd = useCallback(
-    (index = -1) => {
-      indexRef.current = index
-      setIsAdd(true)
-      inputRef.current?.click()
-    },
-    [setIsAdd]
-  )
-
-  //替换全部文件
-  const handleSelectReplace = useCallback(() => {
-    setIsAdd(false)
-    inputRef.current?.click()
-  }, [setIsAdd])
+  //导出pdf
+  const handleExport = useCallback(async () => {
+    if (file) {
+    }
+  }, [file])
 
   return (
     <main className="w-full flex flex-col">
@@ -144,6 +150,7 @@ export default function Home() {
         disabled={!file}
         setRotateList={setRotateList}
         onSelect={file ? handleSelectAdd : handleSelectReplace}
+        onFinish={handleExport}
       />
 
       {/* main */}
