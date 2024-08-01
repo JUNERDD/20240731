@@ -8,6 +8,7 @@ import { pdfjs } from 'react-pdf'
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css'
 import 'react-pdf/dist/esm/Page/TextLayer.css'
 import { PDFDocument } from 'pdf-lib'
+import { saveAs } from 'file-saver'
 import { useCallback, useRef, useState } from 'react'
 import { ElChange, PDFFile } from '@/types'
 import PdfView from '@/components/pdf-view'
@@ -137,8 +138,12 @@ export default function Home() {
   //导出pdf
   const handleExport = useCallback(async () => {
     if (file) {
+      const existingPdfDoc = await loadPdf()
+      const newPdfBytes = await existingPdfDoc.save()
+      const newPdfBlob = new Blob([newPdfBytes], { type: 'application/pdf' })
+      saveAs(newPdfBlob, fileName || 'document.pdf')
     }
-  }, [file])
+  }, [file, fileName])
 
   return (
     <main className="w-full flex flex-col">
