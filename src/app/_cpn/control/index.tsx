@@ -25,10 +25,10 @@ const Control: React.FC<IProps> = ({ disabled, setRotateList, onSelect, onFinish
     (key: string) => {
       switch (key) {
         case 'left':
-          setRotateList((prev) => prev.map((item) => item + 90))
+          setRotateList((prev) => prev.map((item) => (item - 90) % 360))
           break
         case 'right':
-          setRotateList((prev) => prev.map((item) => item - 90))
+          setRotateList((prev) => prev.map((item) => (item + 90) % 360))
           break
       }
     },

@@ -70,14 +70,14 @@ export default function Home() {
   }
 
   //加载pdf
-  async function loadPdf() {
+  const loadPdf = useCallback(async () => {
     const existingPdfBytes =
       file instanceof Blob
         ? await file.arrayBuffer()
         : await fetch(file as string).then((res) => res.arrayBuffer())
 
     return await PDFDocument.load(existingPdfBytes)
-  }
+  }, [file])
 
   //更新pdf
   async function updatePdf(doc: PDFDocument) {
@@ -129,7 +129,7 @@ export default function Home() {
         await updatePdf(existingPdfDoc)
       }
     },
-    [file]
+    [file, loadPdf]
   )
 
   //导出pdf
@@ -147,7 +147,7 @@ export default function Home() {
       const newPdfBlob = new Blob([newPdfBytes], { type: 'application/pdf' })
       saveAs(newPdfBlob, fileName || 'document.pdf')
     }
-  }, [file, rotateList, fileName])
+  }, [file, rotateList, fileName, loadPdf])
 
   return (
     <main className="w-full flex flex-col">
