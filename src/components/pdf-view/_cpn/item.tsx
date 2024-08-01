@@ -6,6 +6,7 @@ import ButtonGroup, { ButtonGroupPropsItems } from '@/components/button-group'
 interface IProps {
   index: number
   name: string
+  onPreview?: (index: number) => void
 }
 
 export interface ListThumbnailRef {
@@ -22,25 +23,30 @@ const buttonGroupItems: ButtonGroupPropsItems[] = [
   { key: 'delete', Icon: Trash, title: 'Delete' }
 ]
 
-const PDFViewItem: React.FC<IProps> = ({ index, name }) => {
+const PDFViewItem: React.FC<IProps> = ({ index, name, onPreview }) => {
   const [rotate, setRotate] = useState(0)
 
   /**
    * 点击按钮组
    */
-  const handleGroupClick = useCallback((key: string) => {
-    switch (key) {
-      case 'preview':
-        break
-      case 'rotate':
-        setRotate((prevRotation) => (prevRotation + 90) % 360)
-        break
-      case 'copy':
-        break
-      case 'delete':
-        break
-    }
-  }, [])
+  const handleGroupClick = useCallback(
+    (key: string) => {
+      switch (key) {
+        case 'preview':
+          // 打开预览
+          onPreview && onPreview(index)
+          break
+        case 'rotate':
+          setRotate((prevRotation) => (prevRotation + 90) % 360)
+          break
+        case 'copy':
+          break
+        case 'delete':
+          break
+      }
+    },
+    [onPreview, setRotate]
+  )
 
   return (
     <div className="flex-center flex-col gap-2 group/item hover:bg-[#D9E5FF] w-40 h-60 select-none relative">

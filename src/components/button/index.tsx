@@ -10,7 +10,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: 'bg-primary text-white hover:bg-[#0048D9]',
-        line: 'border hover:bg-middle-gray'
+        line: 'bg-white border hover:bg-middle-gray'
+      },
+      icon: {
+        true: 'p-0 w-10'
       }
     },
     defaultVariants: {
@@ -20,19 +23,29 @@ const buttonVariants = cva(
 )
 
 interface IProps extends ElProps<'button'>, VariantProps<typeof buttonVariants> {
-  children: React.ReactNode
+  children?: React.ReactNode
   Icon?: LucideIcon
+  iconSize?: number
 }
 
-const Button: React.FC<IProps> = ({ children, Icon, variant = 'primary', className, ...props }) => {
+const Button: React.FC<IProps> = ({
+  children,
+  Icon,
+  iconSize = 17,
+  variant = 'primary',
+  className,
+  ...props
+}) => {
+  const icon = Icon && !children
+
   return (
     <button
       type="button"
       title="user"
-      className={cn(buttonVariants({ variant }), className)}
+      className={cn(buttonVariants({ variant, icon }), className)}
       {...props}
     >
-      {Icon && <Icon strokeWidth={1} size={17} />}
+      {Icon && <Icon strokeWidth={1} size={icon ? 20 : iconSize} />}
       {children}
     </button>
   )

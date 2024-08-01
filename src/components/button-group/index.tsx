@@ -9,7 +9,10 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: 'bg-primary text-white hover:bg-[#0048D9] border-y-0',
-        line: 'hover:bg-middle-gray'
+        line: 'bg-white hover:bg-middle-gray'
+      },
+      icon: {
+        true: 'p-0 w-10'
       }
     },
     defaultVariants: {
@@ -24,6 +27,7 @@ export interface ButtonGroupPropsItems {
   label?: React.ReactNode
   title?: string
   iconSize?: number
+  render?: () => React.ReactNode
 }
 
 interface IProps extends VariantProps<typeof buttonVariants> {
@@ -32,6 +36,7 @@ interface IProps extends VariantProps<typeof buttonVariants> {
   disabled?: boolean
   className?: string
   buttonClassName?: string
+  icon?: boolean
   onClick?: (key: string) => void
 }
 
@@ -41,6 +46,7 @@ const ButtonGroup: React.FC<IProps> = ({
   disabled,
   className,
   buttonClassName,
+  icon,
   variant = 'primary',
   ...props
 }) => {
@@ -60,26 +66,32 @@ const ButtonGroup: React.FC<IProps> = ({
       )}
       {...props}
     >
-      {items.map(({ Icon, label, key, title, iconSize = 17 }, index) => (
-        <Fragment key={key}>
-          <button
-            type="button"
-            className={cn(
-              index === 0 && 'border-l rounded-l-[3px]',
-              index === items.length - 1 && 'rounded-r-[3px]',
-              buttonVariants({ variant }),
-              variant === 'primary' && index === 0 && 'border-l-0',
-              variant === 'primary' && index === items.length - 1 && 'border-r-0',
-              buttonClassName
+      {items.map(({ Icon, label, key, title, render, iconSize = 17 }, index) => {
+        return (
+          <Fragment key={key}>
+            {render ? (
+              render()
+            ) : (
+              <button
+                type="button"
+                className={cn(
+                  index === 0 && 'border-l rounded-l-[3px]',
+                  index === items.length - 1 && 'rounded-r-[3px]',
+                  buttonVariants({ variant, icon }),
+                  variant === 'primary' && index === 0 && 'border-l-0',
+                  variant === 'primary' && index === items.length - 1 && 'border-r-0',
+                  buttonClassName
+                )}
+                title={title}
+                onClick={() => handleClick(key)}
+              >
+                {Icon && <Icon strokeWidth={1} size={icon ? 20 : iconSize} />}
+                {label}
+              </button>
             )}
-            title={title}
-            onClick={() => handleClick(key)}
-          >
-            {Icon && <Icon strokeWidth={1} size={iconSize} />}
-            {label}
-          </button>
-        </Fragment>
-      ))}
+          </Fragment>
+        )
+      })}
 
       {/* 禁用时遮罩层 */}
       {disabled && (
