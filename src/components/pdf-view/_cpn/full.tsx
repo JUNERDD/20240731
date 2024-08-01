@@ -1,7 +1,7 @@
 'use client'
 
 import { ChevronLeft, ChevronRight, RotateCcw, RotateCw, Trash, X } from 'lucide-react'
-import { memo, MutableRefObject, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import Button from '@/components/button'
 import { createPortal } from 'react-dom'
 import { cn } from '@/lib/utils'
@@ -15,6 +15,7 @@ interface IProps {
   numPages: number
   rotateList: number[]
   onRotate?: (index: number, angle: number) => void
+  onDelete?: (index: number) => void
   setOpen?: (show: boolean) => void
   setNum?: (num: number) => void
 }
@@ -25,6 +26,7 @@ const ThumbnailFull: React.FC<IProps> = ({
   numPages,
   rotateList,
   onRotate,
+  onDelete,
   setOpen,
   setNum
 }) => {
@@ -117,6 +119,7 @@ const ThumbnailFull: React.FC<IProps> = ({
           setRotate((prevRotation) => (prevRotation + 90) % 360)
           break
         case 'delete':
+          onDelete && onDelete(numRef.current - 1)
           break
       }
     },

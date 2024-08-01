@@ -14,6 +14,7 @@ export interface TagProps {
   rotateList: number[]
   setRotateList: Dispatch<SetStateAction<number[]>>
   onSelect?: (index?: number) => void
+  onDelete?: (index: number) => void
 }
 
 /**
@@ -24,7 +25,14 @@ const options = {
   standardFontDataUrl: '/standard_fonts/'
 }
 
-const PDFView: React.FC<TagProps> = ({ file, name, rotateList, setRotateList, onSelect }) => {
+const PDFView: React.FC<TagProps> = ({
+  file,
+  name,
+  rotateList,
+  setRotateList,
+  onSelect,
+  onDelete
+}) => {
   //页码
   const [numPages, setNumPages] = useState(0)
 
@@ -89,6 +97,7 @@ const PDFView: React.FC<TagProps> = ({ file, name, rotateList, setRotateList, on
             rotate={rotateList[index]}
             onPreview={handlePreview}
             onRotate={handleRotate}
+            onDelete={onDelete}
           />
 
           {/* 添加按钮 */}
@@ -114,6 +123,7 @@ const PDFView: React.FC<TagProps> = ({ file, name, rotateList, setRotateList, on
         rotateList={rotateList}
         setNum={setNum}
         onRotate={handleRotate}
+        onDelete={onDelete}
       />
     </Document>
   )

@@ -19,7 +19,7 @@ const ListThumbnail: React.FC<ListThumbnailProps> = ({ pageNumber, rotate, onRot
       pageNumber={pageNumber}
       width={120}
       rotate={rotate}
-      className="relative cursor-default"
+      className="relative cursor-default overflow-auto"
     >
       {/* 旋转按钮 */}
       <div className="absolute flex-center top-0 right-0 left-0 bottom-0">

@@ -9,6 +9,7 @@ interface IProps {
   rotate?: number
   onRotate?: (index: number, angle: number) => void
   onPreview?: (index: number) => void
+  onDelete?: (index: number) => void
 }
 
 export interface ListThumbnailRef {
@@ -25,7 +26,14 @@ const buttonGroupItems: ButtonGroupPropsItems[] = [
   { key: 'delete', Icon: Trash, title: 'Delete' }
 ]
 
-const PDFViewItem: React.FC<IProps> = ({ index, name, rotate = 0, onRotate, onPreview }) => {
+const PDFViewItem: React.FC<IProps> = ({
+  index,
+  name,
+  rotate = 0,
+  onRotate,
+  onPreview,
+  onDelete
+}) => {
   //ref
   const rotateRef = useRef(rotate)
   const indexRef = useRef(index)
@@ -47,7 +55,7 @@ const PDFViewItem: React.FC<IProps> = ({ index, name, rotate = 0, onRotate, onPr
       switch (key) {
         case 'preview':
           // 打开预览
-          onPreview && onPreview(index)
+          onPreview && onPreview(indexRef.current)
           break
         case 'rotate':
           rotateFn()
@@ -55,6 +63,7 @@ const PDFViewItem: React.FC<IProps> = ({ index, name, rotate = 0, onRotate, onPr
         case 'copy':
           break
         case 'delete':
+          onDelete && onDelete(indexRef.current)
           break
       }
     },

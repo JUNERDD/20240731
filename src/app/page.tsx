@@ -35,7 +35,24 @@ export default function Home() {
   //旋转数组
   const [rotateList, setRotateList] = useState<number[]>([])
 
-  //更改pdf
+  //input文件更改事件
+  const indexRef = useRef(0)
+  const handleFileChange: ElChange<HTMLInputElement> = async ({ target }) => {
+    const { files } = target
+
+    const nextFile = files?.[0]
+
+    if (nextFile) {
+      if (isAdd) {
+        await addPdf(nextFile, indexRef.current)
+      } else {
+        setFile(nextFile)
+        setFileName(nextFile.name)
+      }
+    }
+  }
+
+  //添加pdf
   async function addPdf(nextFile: File, index: number) {
     //增加
     const existingPdfBytes =
@@ -65,22 +82,29 @@ export default function Home() {
     setFile(mergedPdfUrl)
   }
 
-  //文件更改事件
-  const indexRef = useRef(0)
-  const handleFileChange: ElChange<HTMLInputElement> = async ({ target }) => {
-    const { files } = target
+  //删除pdf
+  const handleDelete = useCallback(
+    async (index: number) => {
+      if (file) {
+        const existingPdfBytes =
+          file instanceof Blob
+            ? await file.arrayBuffer()
+            : await fetch(file as string).then((res) => res.arrayBuffer())
 
-    const nextFile = files?.[0]
+        const existingPdfDoc = await PDFDocument.load(existingPdfBytes)
 
-    if (nextFile) {
-      if (isAdd) {
-        await addPdf(nextFile, indexRef.current)
-      } else {
-        setFile(nextFile)
-        setFileName(nextFile.name)
+        // 删除指定索引的页面
+        existingPdfDoc.removePage(index)
+
+        const updatedPdfBytes = await existingPdfDoc.save()
+        const updatedPdfBlob = new Blob([updatedPdfBytes], { type: 'application/pdf' })
+        const updatedPdfUrl = URL.createObjectURL(updatedPdfBlob)
+
+        setFile(updatedPdfUrl)
       }
-    }
-  }
+    },
+    [file]
+  )
 
   //打开文件选择对话框
   const handleSelectAdd = useCallback(
@@ -92,6 +116,7 @@ export default function Home() {
     [setIsAdd]
   )
 
+  //替换全部文件
   const handleSelectReplace = useCallback(() => {
     setIsAdd(false)
     inputRef.current?.click()
@@ -118,6 +143,7 @@ export default function Home() {
             file={file}
             name={fileName}
             onSelect={handleSelectAdd}
+            onDelete={handleDelete}
             rotateList={rotateList}
             setRotateList={setRotateList}
           />
