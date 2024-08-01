@@ -23,7 +23,7 @@ export default function Home() {
   const [file, setFile] = useState<PDFFile>('sample.pdf')
 
   //文件名
-  const [fileName, setFileName] = useState<string>('sample.pdf')
+  const [fileName, setFileName] = useState<string>('sample_test_pdf.pdf')
 
   //文件选择器ref
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -56,7 +56,7 @@ export default function Home() {
       <div
         className={cn(
           'bg-[#F2F6FF] flex-center flex-col gap-4 h-full overflow-auto p-8',
-          file && 'justify-start items-start'
+          file && 'justify-start items-start py-8 px-6'
         )}
       >
         {/* 选择文件 */}

@@ -9,7 +9,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary: 'bg-primary text-white hover:bg-[#0048D9] border-y-0',
-        line: 'border hover:bg-middle-gray'
+        line: 'hover:bg-middle-gray'
       }
     },
     defaultVariants: {
@@ -22,12 +22,16 @@ export interface ButtonGroupPropsItems {
   key: string
   Icon?: LucideIcon
   label?: React.ReactNode
+  title?: string
+  iconSize?: number
 }
 
 interface IProps extends VariantProps<typeof buttonVariants> {
   items: ButtonGroupPropsItems[]
   Icon?: LucideIcon
   disabled?: boolean
+  className?: string
+  buttonClassName?: string
   onClick?: (key: string) => void
 }
 
@@ -35,6 +39,8 @@ const ButtonGroup: React.FC<IProps> = ({
   items,
   onClick,
   disabled,
+  className,
+  buttonClassName,
   variant = 'primary',
   ...props
 }) => {
@@ -46,8 +52,15 @@ const ButtonGroup: React.FC<IProps> = ({
   }
 
   return (
-    <div title="user" className={cn('flex-center-i h-10 select-none text-sm relative')} {...props}>
-      {items.map(({ Icon, label, key }, index) => (
+    <div
+      title="user"
+      className={cn(
+        'flex-center-i h-10 select-none text-sm relative rounded-[3px] overflow-hidden',
+        className
+      )}
+      {...props}
+    >
+      {items.map(({ Icon, label, key, title, iconSize = 17 }, index) => (
         <Fragment key={key}>
           <button
             type="button"
@@ -56,11 +69,13 @@ const ButtonGroup: React.FC<IProps> = ({
               index === items.length - 1 && 'rounded-r-[3px]',
               buttonVariants({ variant }),
               variant === 'primary' && index === 0 && 'border-l-0',
-              variant === 'primary' && index === items.length - 1 && 'border-r-0'
+              variant === 'primary' && index === items.length - 1 && 'border-r-0',
+              buttonClassName
             )}
+            title={title}
             onClick={() => handleClick(key)}
           >
-            {Icon && <Icon strokeWidth={1} size={17} />}
+            {Icon && <Icon strokeWidth={1} size={iconSize} />}
             {label}
           </button>
         </Fragment>

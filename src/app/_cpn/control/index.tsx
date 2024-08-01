@@ -11,8 +11,8 @@ interface IProps {}
  * 按钮组
  */
 const items: ButtonGroupPropsItems[] = [
-  { Icon: RotateCcw, label: 'Left', key: 'left' },
-  { Icon: RotateCw, label: 'Right', key: 'right' }
+  { Icon: RotateCcw, label: 'Left', key: 'left', title: 'Rotate Left' },
+  { Icon: RotateCw, label: 'Right', key: 'right', title: 'Rotate Right' }
 ]
 
 const Control: React.FC<IProps> = () => {
@@ -23,7 +23,7 @@ const Control: React.FC<IProps> = () => {
   return (
     <div className="flex-center-i justify-between px-4 py-2 border-b border-zinc-200">
       <div className="flex-center-i gap-2">
-        <Button Icon={CirclePlus} variant="line">
+        <Button Icon={CirclePlus} variant="line" title="Add Document">
           Add
         </Button>
         {/* 旋转pdf */}
