@@ -50,6 +50,9 @@ export default function Home() {
         setFileName(nextFile.name)
       }
     }
+
+    //重置选择
+    target.value = ''
   }
 
   //加载pdf
@@ -137,7 +140,11 @@ export default function Home() {
       <AppHeader label="Rotate" />
 
       {/* control */}
-      <Control disabled={!file} setRotateList={setRotateList} onSelect={handleSelectAdd} />
+      <Control
+        disabled={!file}
+        setRotateList={setRotateList}
+        onSelect={file ? handleSelectAdd : handleSelectReplace}
+      />
 
       {/* main */}
       <div

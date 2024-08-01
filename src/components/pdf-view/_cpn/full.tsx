@@ -113,10 +113,10 @@ const ThumbnailFull: React.FC<IProps> = ({
           break
         }
         case 'rotate left':
-          setRotate((prevRotation) => (prevRotation - 90) % 360)
+          setRotate((prevRotation) => (prevRotation + 90) % 360)
           break
         case 'rotate right':
-          setRotate((prevRotation) => (prevRotation + 90) % 360)
+          setRotate((prevRotation) => (prevRotation - 90) % 360)
           break
         case 'delete':
           onDelete && onDelete(numRef.current - 1)
