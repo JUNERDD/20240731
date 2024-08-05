@@ -34,7 +34,7 @@ const Select: React.FC<IProps> = ({ onSelect }) => {
 
   return (
     <div
-      className="w-full h-full bg-[#E5EEFF] flex-center flex-col gap-4 hover:bg-[#D9E5FF] rounded-[4px] cursor-pointer transition duration-500 border-dashed border border-sky-500 select-none"
+      className="flex-center h-full w-full cursor-pointer select-none flex-col gap-4 rounded-[4px] border border-dashed border-sky-500 bg-[#E5EEFF] transition duration-500 hover:bg-[#D9E5FF]"
       onClick={handleClick}
     >
       {/* 图标 */}

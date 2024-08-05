@@ -27,15 +27,7 @@ const buttonGroupItems: ButtonGroupPropsItems[] = [
   { key: 'delete', Icon: Trash, title: 'Delete' }
 ]
 
-const PDFViewItem: React.FC<IProps> = ({
-  index,
-  name,
-  rotate = 0,
-  onRotate,
-  onPreview,
-  onCopy,
-  onDelete
-}) => {
+const PDFViewItem: React.FC<IProps> = ({ index, name, rotate = 0, onRotate, onPreview, onCopy, onDelete }) => {
   //ref
   const rotateRef = useRef(rotate)
   const indexRef = useRef(index)
@@ -74,15 +66,12 @@ const PDFViewItem: React.FC<IProps> = ({
   )
 
   return (
-    <div className="flex-center flex-col gap-2 group/item hover:bg-[#D9E5FF] w-40 h-60 select-none relative">
+    <div className="flex-center group/item relative h-60 w-40 select-none flex-col gap-2 hover:bg-[#D9E5FF]">
       {/* pdf浏览 */}
       <ListThumbnail pageNumber={index + 1} rotate={rotate} onRotate={rotateFn} />
 
       {/* 名称 */}
-      <span
-        className="text-[#66242f] bg-[#ff59754d] px-2 rounded-sm max-w-24 truncate cursor-default"
-        title={name}
-      >
+      <span className="max-w-24 cursor-default truncate rounded-sm bg-[#ff59754d] px-2 text-[#66242f]" title={name}>
         {name}
       </span>
 
@@ -91,7 +80,7 @@ const PDFViewItem: React.FC<IProps> = ({
 
       {/* 按钮组 */}
       <ButtonGroup
-        className="absolute invisible group-hover/item:visible right-1 top-1 bg-white h-7"
+        className="invisible absolute right-1 top-1 h-7 bg-white group-hover/item:visible"
         variant="line"
         buttonClassName="p-1"
         items={buttonGroupItems}

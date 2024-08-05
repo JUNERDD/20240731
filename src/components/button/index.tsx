@@ -4,23 +4,20 @@ import { cva, VariantProps } from 'class-variance-authority'
 import type { LucideIcon } from 'lucide-react'
 import { memo } from 'react'
 
-const buttonVariants = cva(
-  'flex-center h-10 gap-2 px-3 select-none transition duration-500 rounded-[3px] text-sm',
-  {
-    variants: {
-      variant: {
-        primary: 'bg-primary text-white hover:bg-[#0048D9]',
-        line: 'bg-white border hover:bg-middle-gray'
-      },
-      icon: {
-        true: 'p-0 w-10'
-      }
+const buttonVariants = cva('flex-center h-10 gap-2 px-3 select-none transition duration-500 rounded-[3px] text-sm', {
+  variants: {
+    variant: {
+      primary: 'bg-primary text-white hover:bg-[#0048D9]',
+      line: 'bg-white border hover:bg-middle-gray'
     },
-    defaultVariants: {
-      variant: 'primary'
+    icon: {
+      true: 'p-0 w-10'
     }
+  },
+  defaultVariants: {
+    variant: 'primary'
   }
-)
+})
 
 interface IProps extends ElProps<'button'>, VariantProps<typeof buttonVariants> {
   children?: React.ReactNode
@@ -45,7 +42,7 @@ const Button: React.FC<IProps> = ({
       title="user"
       className={cn(
         buttonVariants({ variant, icon }),
-        disabled && 'bg-[#F4F4F4] cursor-not-allowed hover:bg-[#F4F4F4] text-zinc-400',
+        disabled && 'cursor-not-allowed bg-[#F4F4F4] text-zinc-400 hover:bg-[#F4F4F4]',
         className
       )}
       {...props}

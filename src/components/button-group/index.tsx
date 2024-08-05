@@ -60,10 +60,7 @@ const ButtonGroup: React.FC<IProps> = ({
   return (
     <div
       title="user"
-      className={cn(
-        'flex-center-i h-10 select-none text-sm relative rounded-[3px] overflow-hidden',
-        className
-      )}
+      className={cn('flex-center-i relative h-10 select-none overflow-hidden rounded-[3px] text-sm', className)}
       {...props}
     >
       {items.map(({ Icon, label, key, title, render, iconSize = 17 }, index) => {
@@ -75,7 +72,7 @@ const ButtonGroup: React.FC<IProps> = ({
               <button
                 type="button"
                 className={cn(
-                  index === 0 && 'border-l rounded-l-[3px]',
+                  index === 0 && 'rounded-l-[3px] border-l',
                   index === items.length - 1 && 'rounded-r-[3px]',
                   buttonVariants({ variant, icon }),
                   variant === 'primary' && index === 0 && 'border-l-0',
@@ -94,9 +91,7 @@ const ButtonGroup: React.FC<IProps> = ({
       })}
 
       {/* 禁用时遮罩层 */}
-      {disabled && (
-        <div className="absolute flex h-full w-full cursor-not-allowed bg-[rgba(255,255,255,0.5)]" />
-      )}
+      {disabled && <div className="absolute flex h-full w-full cursor-not-allowed bg-[rgba(255,255,255,0.5)]" />}
     </div>
   )
 }

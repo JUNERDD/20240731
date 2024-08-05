@@ -46,7 +46,7 @@ const Control: React.FC<IProps> = ({ disabled, setRotateList, onSelect, onFinish
   }, [onFinish])
 
   return (
-    <div className="flex-center-i justify-between px-4 py-2 border-b border-zinc-200">
+    <div className="flex-center-i justify-between border-b border-zinc-200 px-4 py-2">
       <div className="flex-center-i gap-2">
         <Button Icon={CirclePlus} variant="line" title="Add Document" onClick={handleAdd}>
           Add

@@ -8,10 +8,7 @@ export interface TagProps {
 
 const Tag: React.FC<TagProps> = ({ label, color, backgroundColor }) => {
   return (
-    <span
-      className="rounded-full text-xs py-[0.2rem] px-2 font-bold"
-      style={{ color, backgroundColor }}
-    >
+    <span className="rounded-full px-2 py-[0.2rem] text-xs font-bold" style={{ color, backgroundColor }}>
       {label}
     </span>
   )

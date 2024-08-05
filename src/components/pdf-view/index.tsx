@@ -26,15 +26,7 @@ const options = {
   standardFontDataUrl: '/standard_fonts/'
 }
 
-const PDFView: React.FC<PdfViewProps> = ({
-  file,
-  name,
-  rotateList,
-  setRotateList,
-  onSelect,
-  onCopy,
-  onDelete
-}) => {
+const PDFView: React.FC<PdfViewProps> = ({ file, name, rotateList, setRotateList, onSelect, onCopy, onDelete }) => {
   //页码
   const [numPages, setNumPages] = useState(0)
 
@@ -96,7 +88,7 @@ const PDFView: React.FC<PdfViewProps> = ({
       file={file}
       onLoadSuccess={onDocumentLoadSuccess}
       options={options}
-      className="flex gap-2 text-xs flex-wrap"
+      className="flex flex-wrap gap-2 text-xs"
       onItemClick={() => {}}
     >
       {Array.from(new Array(numPages), (_, index) => (

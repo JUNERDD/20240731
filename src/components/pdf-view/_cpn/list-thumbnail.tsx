@@ -15,16 +15,11 @@ const ListThumbnail: React.FC<ListThumbnailProps> = ({ pageNumber, rotate, onRot
   }
 
   return (
-    <Thumbnail
-      pageNumber={pageNumber}
-      width={120}
-      rotate={rotate}
-      className="relative cursor-default overflow-auto"
-    >
+    <Thumbnail pageNumber={pageNumber} width={120} rotate={rotate} className="relative cursor-default overflow-auto">
       {/* 旋转按钮 */}
-      <div className="absolute flex-center top-0 right-0 left-0 bottom-0">
+      <div className="flex-center absolute bottom-0 left-0 right-0 top-0">
         <div
-          className="bg-white w-8 h-8 border border-primary rounded-full flex-center group-hover/item:bg-primary group-hover/item:border-none shadow-2xl drop-shadow-md cursor-pointer"
+          className="flex-center h-8 w-8 cursor-pointer rounded-full border border-primary bg-white shadow-2xl drop-shadow-md group-hover/item:border-none group-hover/item:bg-primary"
           title="Rotate"
           onClick={rotatePDF}
         >

@@ -72,9 +72,7 @@ export default function Home() {
   //加载pdf
   const loadPdf = useCallback(async () => {
     const existingPdfBytes =
-      file instanceof Blob
-        ? await file.arrayBuffer()
-        : await fetch(file as string).then((res) => res.arrayBuffer())
+      file instanceof Blob ? await file.arrayBuffer() : await fetch(file as string).then((res) => res.arrayBuffer())
 
     return await PDFDocument.load(existingPdfBytes)
   }, [file])
@@ -150,7 +148,7 @@ export default function Home() {
   }, [file, rotateList, fileName, loadPdf])
 
   return (
-    <main className="w-full flex flex-col">
+    <main className="flex w-full flex-col">
       {/* header */}
       <AppHeader label="Rotate" />
 
@@ -165,8 +163,8 @@ export default function Home() {
       {/* main */}
       <div
         className={cn(
-          'bg-[#F2F6FF] flex-center flex-col gap-4 h-full overflow-auto p-8',
-          file && 'justify-start items-start py-8 px-6'
+          'flex-center h-full flex-col gap-4 overflow-auto bg-[#F2F6FF] p-8',
+          file && 'items-start justify-start px-6 py-8'
         )}
       >
         {/* 选择文件 */}
@@ -186,7 +184,7 @@ export default function Home() {
 
         {/* pdf logo */}
         {!file && (
-          <div className="w-24 h-8 overflow-hidden text-[#D9DFED]">
+          <div className="h-8 w-24 overflow-hidden text-[#D9DFED]">
             <PdfLogo />
           </div>
         )}

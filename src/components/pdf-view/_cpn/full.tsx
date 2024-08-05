@@ -20,16 +20,7 @@ interface IProps {
   setNum?: (num: number) => void
 }
 
-const ThumbnailFull: React.FC<IProps> = ({
-  open,
-  num,
-  numPages,
-  rotateList,
-  onRotate,
-  onDelete,
-  setOpen,
-  setNum
-}) => {
+const ThumbnailFull: React.FC<IProps> = ({ open, num, numPages, rotateList, onRotate, onDelete, setOpen, setNum }) => {
   //内部数字
   const [boxNum, setBoxNum] = useState(num)
 
@@ -74,11 +65,11 @@ const ThumbnailFull: React.FC<IProps> = ({
       {
         key: 'num',
         render: () => (
-          <div className="bg-white h-full border-y border-r flex-center gap-2 px-6 border-middle-gray">
+          <div className="flex-center h-full gap-2 border-y border-r border-middle-gray bg-white px-6">
             <form onSubmit={handleInputNum} onBlur={handleInputNum}>
               <input
                 title="page number"
-                className="w-8 h-8 bg-[#F4F4F4] outline-none text-center"
+                className="h-8 w-8 bg-[#F4F4F4] text-center outline-none"
                 value={boxNum}
                 onChange={({ target: { value } }) => setBoxNum(Number(value) ? Number(value) : 1)}
               />
@@ -137,12 +128,12 @@ const ThumbnailFull: React.FC<IProps> = ({
   }, [rotate, onRotate])
 
   return createPortal(
-    <div className={cn('fixed top-0 bottom-0 left-0 right-0', open ? 'flex-center' : 'hidden')}>
+    <div className={cn('fixed bottom-0 left-0 right-0 top-0', open ? 'flex-center' : 'hidden')}>
       {/* 遮罩 */}
-      <div className="absolute w-full h-full bg-[rgba(0,0,0,0.5)]" onClick={handleClose} />
+      <div className="absolute h-full w-full bg-[rgba(0,0,0,0.5)]" onClick={handleClose} />
 
       {/* 关闭按钮 */}
-      <Button Icon={X} variant="line" className="absolute top-4 right-4" onClick={handleClose} />
+      <Button Icon={X} variant="line" className="absolute right-4 top-4" onClick={handleClose} />
 
       {/* 浏览 */}
       <Thumbnail
@@ -153,13 +144,7 @@ const ThumbnailFull: React.FC<IProps> = ({
       />
 
       {/* 控制 */}
-      <ButtonGroup
-        items={items}
-        variant="line"
-        icon
-        className="absolute bottom-8 mx-auto"
-        onClick={handleClick}
-      />
+      <ButtonGroup items={items} variant="line" icon className="absolute bottom-8 mx-auto" onClick={handleClick} />
     </div>,
     document.body
   )

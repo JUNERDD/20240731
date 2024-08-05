@@ -12,14 +12,14 @@ const Last: React.FC<IProps> = ({ onSelect }) => {
 
   return (
     <div
-      className="w-40 h-60 flex-center flex-col text-[#6699ff] gap-4 hover:bg-[#D9E5FF] rounded-[4px] cursor-pointer transition duration-500 border-dashed border border-sky-500 select-none"
+      className="flex-center h-60 w-40 cursor-pointer select-none flex-col gap-4 rounded-[4px] border border-dashed border-sky-500 text-[#6699ff] transition duration-500 hover:bg-[#D9E5FF]"
       onClick={handleClick}
     >
       {/* 图标 */}
       <PlusCircle strokeWidth={1} />
 
       {/* 说明 */}
-      <p className="flex-center gap-1 flex-wrap w-2/3">
+      <p className="flex-center w-2/3 flex-wrap gap-1">
         <span>Add</span>
         <strong>PDF, </strong>
         <strong>image, Word, </strong>

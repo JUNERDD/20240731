@@ -12,17 +12,15 @@ interface IProps {}
 /**
  * 导航
  */
-const navList: { text: string; path: string; Icon: LucideIcon }[] = [
-  { text: 'Organize', path: '/', Icon: LayoutGrid }
-]
+const navList: { text: string; path: string; Icon: LucideIcon }[] = [{ text: 'Organize', path: '/', Icon: LayoutGrid }]
 
 const AppNav: React.FC<IProps> = () => {
   const pathname = usePathname()
 
   return (
-    <nav className="h-full py-2 flex-center-i flex-col gap-1 bg-primary-deep text-white">
-      <div className="pb-2 border-b border-zinc-700">
-        <Link href="/" className="w-10 h-10 flex mx-4 ">
+    <nav className="flex-center-i h-full flex-col gap-1 bg-primary-deep py-2 text-white">
+      <div className="border-b border-zinc-700 pb-2">
+        <Link href="/" className="mx-4 flex h-10 w-10">
           <Logo />
         </Link>
       </div>
@@ -32,7 +30,7 @@ const AppNav: React.FC<IProps> = () => {
           key={text}
           href={path}
           className={cn(
-            'flex-center-i flex-col text-xs gap-1 p-2 hover:bg-[#143370] rounded-[3px] scale-90',
+            'flex-center-i scale-90 flex-col gap-1 rounded-[3px] p-2 text-xs hover:bg-[#143370]',
             pathname === path ? 'bg-[#294C94]' : 'bg-text-zinc-400'
           )}
         >
